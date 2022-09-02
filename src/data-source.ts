@@ -1,7 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Room } from "./entity/Room"
-import { Video } from "./entity/Video"
+
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -12,7 +11,7 @@ export const AppDataSource = new DataSource({
     database: "api-academica",
     synchronize: false,
     logging: false,
-    entities: [Room, Video],
-    migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
+    entities: [ __dirname + "/**/entity/*.{ts,js}"],
+    migrations: [ __dirname + "/**/migrations/*.{ts,js}"],
     subscribers: [],
 })
