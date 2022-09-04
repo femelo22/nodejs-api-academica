@@ -18,5 +18,6 @@ routes.get('/rooms', new RoomController().list)
 
 //Video
 routes.get('/videos', new VideoController().list)
+routes.get('/videos/:id', new VideoController().findById)
 
 export default routes

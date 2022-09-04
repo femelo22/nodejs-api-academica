@@ -15,4 +15,25 @@ export class VideoController {
         }
 
     }
+
+    async findById(req: Request, res: Response): Promise<Video> {
+        const { id } = req.params
+
+        try {
+            const video = await videoRepository.findOneBy({ id: id})
+
+            if(!video) {
+               return res.status(404).json({
+                message: 'Video not found',
+               })
+            }
+
+            return res.status(200).json(video)
+
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message
+            })
+        }
+    }
 }
