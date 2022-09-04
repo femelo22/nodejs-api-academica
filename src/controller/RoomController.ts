@@ -23,7 +23,6 @@ export class RoomController {
         }
     }
 
-
     async createVideo(req: Request, res: Response) {
         const { title , url } = req.body;
         const { idRoom } = req.params;
@@ -97,6 +96,25 @@ export class RoomController {
                 message: 'Internal Server Error.'
             })
             
+        }
+    }
+
+    async list (req: Request, res: Response) {
+
+        try {
+            
+            const rooms = await roomRepository.find({
+                relations: {
+                    subjects: true,
+                    videos: true
+                }
+            });
+
+            return res.json(rooms);
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Internal Server Error.' 
+            })
         }
     }
 }
