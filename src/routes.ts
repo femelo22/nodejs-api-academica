@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { RoomController } from './controller/RoomController';
 import { SubjectController } from './controller/SubjectController';
+import { VideoController } from './controller/VideoController';
 
 const routes = Router();
 
@@ -15,5 +16,7 @@ routes.post('/rooms/:idRoom/create', new RoomController().createVideo)
 routes.put('/rooms/:idRoom/subject', new RoomController().roomSubject)
 routes.get('/rooms', new RoomController().list)
 
+//Video
+routes.get('/videos', new VideoController().list)
 
 export default routes
