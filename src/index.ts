@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express"
+import * as express from "express"
 import { AppDataSource } from "./data-source"
 import { errorMiddleware } from "./errors/error"
 import routes from "./routes"

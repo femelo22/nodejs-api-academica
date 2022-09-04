@@ -29,4 +29,39 @@ export class SubjectController {
         }
 
     }
+
+    async list(req: Request, res: Response): Promise<Subject[]>{
+
+        try {
+            
+            const subjects = await subjectRepository.find();
+
+            return res.json(subjects);
+        } catch (error) {
+            
+        }
+    }
+
+    async delete(req: Request, res: Response): Promise<void> {
+        const { idSubject } = req.params;
+
+        console.log(idSubject)
+
+        try {
+            const subject = await subjectRepository.findOneBy({ id: Number(idSubject) });
+
+            if(!subject) {
+                return res.status(404).json({
+                    message: `Subject ${idSubject} nåo encontrado.`
+                })
+            }
+
+            await subjectRepository.delete(subject);
+
+            return res.status(204).send();
+
+        } catch (error) {
+            
+        }
+    }
 }
