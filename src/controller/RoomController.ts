@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { roomRepository } from '../repositories/roomRepository';
+import { subjectRepository } from '../repositories/SubjectRepository';
+import { videoRepository } from '../repositories/videoRepository';
 
 export class RoomController {
 
@@ -16,8 +18,85 @@ export class RoomController {
         } catch (error) {
             console.log(error)
             return res.status(500).json({
-                message: 'Internal Server Error'
+                message: 'Internal Server Error.'
             })
+        }
+    }
+
+
+    async createVideo(req: Request, res: Response) {
+        const { title , url } = req.body;
+        const { idRoom } = req.params;
+
+        try {
+
+            const room = await roomRepository.findOneBy({
+                id: Number(idRoom)
+            });
+
+            if(!room) {
+                return res.status(404).json({
+                    message: `Aula ${idRoom} nåo existe.`
+                })
+            }
+
+            const newVideo = videoRepository.create({
+                title,
+                url,
+                room
+            })
+
+            await videoRepository.save(newVideo);
+
+            return res.status(201).json(newVideo);
+            
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                message: 'Internal Server Error.'
+            })
+        }
+    }
+
+    async roomSubject(req: Request, res: Response) {
+        const { idSubject } = req.body;
+        const { idRoom } = req.params;
+        
+        try {
+            
+            const room = await roomRepository.findOneBy({
+                id: Number(idRoom)
+            });
+
+            if(!room) {
+                return res.status(404).json({
+                    message: `Aula ${idRoom} nåo existe.`
+                })
+            }
+
+            const subject = await subjectRepository.findOneBy({ id: Number(idSubject) });
+
+            if(!subject) {
+                return res.status(404).json({
+                    message: `Disciplina ${idSubject} nåo existe.`
+                })
+            }
+
+            const roomUpdate = {
+                ...room,
+                subjects: [subject]
+            }
+
+            await roomRepository.save(roomUpdate);
+
+            return res.status(200).json(room);
+
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                message: 'Internal Server Error.'
+            })
+            
         }
     }
 }
