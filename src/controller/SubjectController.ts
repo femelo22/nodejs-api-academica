@@ -4,7 +4,7 @@ import { subjectRepository } from "../repositories/SubjectRepository"
 
 export class SubjectController {
 
-    async create(req: Request, res: Response) {
+    async create(req: Request, res: Response): Promise<Subject> {
 
         const { name } = req.body
 
@@ -15,12 +15,13 @@ export class SubjectController {
         }
 
         try {
-            const subject = new Subject();
-            subject.name = name;
 
-            const newSubject = subjectRepository.create({ name })
+            const newSubject = subjectRepository.create({ name });
 
-            console.log(newSubject);
+            await subjectRepository.save(newSubject);
+
+            return res.status(201).json(newSubject);
+
         } catch(err) {
             return res.status(500).json({
                 message: err.message
