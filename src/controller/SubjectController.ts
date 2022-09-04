@@ -1,8 +1,11 @@
 import { Request, Response } from "express"
+import { Subject } from '../entity/Subject'
+import { subjectRepository } from "../repositories/SubjectRepository"
 
 export class SubjectController {
 
     async create(req: Request, res: Response) {
+
         const { name } = req.body
 
         if(!name) {
@@ -12,7 +15,12 @@ export class SubjectController {
         }
 
         try {
+            const subject = new Subject();
+            subject.name = name;
 
+            const newSubject = subjectRepository.create({ name })
+
+            console.log(newSubject);
         } catch(err) {
             return res.status(500).json({
                 message: err.message

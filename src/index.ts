@@ -1,14 +1,13 @@
 import * as express from "express"
-import * as bodyParser from "body-parser"
-import { Request, Response } from "express"
 import { AppDataSource } from "./data-source"
-// import { Routes } from "./routes"
+import routes from "./routes"
 
 AppDataSource.initialize().then(async () => {
 
     const app = express()
 
     app.use(express.json())
+    app.use(routes)
 
     app.listen(3000, () => {
         console.log('server listening on port 3000')
